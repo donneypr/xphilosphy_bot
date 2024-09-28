@@ -138,7 +138,37 @@ philosophers_quotes = [
     "Dwell on the beauty of life. Watch the stars, and see yourself running with them. – Marcus Aurelius",
     "It is not death that a man should fear, but he should fear never beginning to live. – Marcus Aurelius",
     "You have power over your mind - not outside events. Realize this, and you will find strength. – Marcus Aurelius",
-    "Very little is needed to make a happy life; it is all within yourself, in your way of thinking. – Marcus Aurelius"
+    "Very little is needed to make a happy life; it is all within yourself, in your way of thinking. – Marcus Aurelius",
+    "He who knows himself is enlightened. – Lao Tzu",
+    "The greatest wealth is to live content with little. – Plato",
+    "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path. – Buddha",
+    "You cannot teach a man anything; you can only help him find it within himself. – Galileo Galilei",
+    "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. – Marie Curie",
+    "It is the power of the mind to be unconquerable. – Seneca",
+    "The only limit to our realization of tomorrow is our doubts of today. – Franklin D. Roosevelt",
+    "A journey of a thousand miles begins with a single step. – Lao Tzu",
+    "In the end, we will remember not the words of our enemies, but the silence of our friends. – Martin Luther King Jr.",
+    "We must not allow other people's limited perceptions to define us. – Virginia Satir",
+    "The purpose of life is a life of purpose. – Robert Byrne",
+    "He who fears he will suffer, already suffers because he fears. – Michel de Montaigne",
+    "Those who know do not speak. Those who speak do not know. – Lao Tzu",
+    "Knowing others is intelligence; knowing yourself is true wisdom. Mastering others is strength; mastering yourself is true power. – Lao Tzu",
+    "People are disturbed not by things, but by the view they take of them. – Epictetus",
+    "We are all in the gutter, but some of us are looking at the stars. – Oscar Wilde",
+    "The man who moves a mountain begins by carrying away small stones. – Confucius",
+    "The mind is not a vessel to be filled, but a fire to be kindled. – Plutarch",
+    "Do not go where the path may lead, go instead where there is no path and leave a trail. – Ralph Waldo Emerson",
+    "Out of clutter, find simplicity. From discord, find harmony. In the middle of difficulty lies opportunity. – Albert Einstein",
+    "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate, to have it make some difference that you have lived and lived well. – Ralph Waldo Emerson",
+    "What lies behind us and what lies before us are tiny matters compared to what lies within us. – Ralph Waldo Emerson",
+    "A smooth sea never made a skilled sailor. – Franklin D. Roosevelt",
+    "The most difficult thing is the decision to act, the rest is merely tenacity. – Amelia Earhart",
+    "The best way to predict the future is to create it. – Peter Drucker",
+    "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment. – Buddha",
+    "We do not see things as they are, we see them as we are. – Anaïs Nin",
+    "In three words I can sum up everything I've learned about life: it goes on. – Robert Frost",
+    "Believe you can and you're halfway there. – Theodore Roosevelt"
+    
 ] 
 
 # Timezone setup for Toronto
@@ -147,7 +177,7 @@ toronto_timezone = pytz.timezone('America/Toronto')
 def tweet_random_quote():
     quote = random.choice(philosophers_quotes)
     try:
-        response = client.create_tweet(text=quote)
+        response = client.create_tweet(text=quote + " #philosophy #quote #thinking #motivation")
         print(f"Tweet posted successfully: {response.data}")
     except tweepy.TweepyException as e:
         print(f"Error posting tweet: {e}")
@@ -161,10 +191,30 @@ def active_clock():
     time_until_next = next_run - now
     print(f"\rCurrent time: {now.strftime('%Y-%m-%d %H:%M:%S %Z')} | Next tweet: {next_run.strftime('%Y-%m-%d %H:%M:%S %Z')} | Time until next tweet: {str(time_until_next)}", end="", flush=True)
 
+schedule.every().day.at("00:00").do(tweet_random_quote)
+schedule.every().day.at("01:00").do(tweet_random_quote)
+schedule.every().day.at("02:00").do(tweet_random_quote)
+schedule.every().day.at("03:00").do(tweet_random_quote)
+schedule.every().day.at("04:00").do(tweet_random_quote)
+schedule.every().day.at("05:00").do(tweet_random_quote)
+schedule.every().day.at("06:00").do(tweet_random_quote)
+schedule.every().day.at("07:00").do(tweet_random_quote)
+schedule.every().day.at("08:00").do(tweet_random_quote)
 schedule.every().day.at("09:00").do(tweet_random_quote)
+schedule.every().day.at("10:00").do(tweet_random_quote)
+schedule.every().day.at("11:00").do(tweet_random_quote)
+schedule.every().day.at("12:00").do(tweet_random_quote)
 schedule.every().day.at("13:00").do(tweet_random_quote)
+schedule.every().day.at("14:00").do(tweet_random_quote)
+schedule.every().day.at("15:00").do(tweet_random_quote)
+schedule.every().day.at("16:00").do(tweet_random_quote)
 schedule.every().day.at("17:00").do(tweet_random_quote)
+schedule.every().day.at("18:00").do(tweet_random_quote)
+schedule.every().day.at("19:00").do(tweet_random_quote)
+schedule.every().day.at("20:00").do(tweet_random_quote)
 schedule.every().day.at("21:00").do(tweet_random_quote)
+schedule.every().day.at("22:00").do(tweet_random_quote)
+schedule.every().day.at("23:00").do(tweet_random_quote)
 
 try:
     while True:
