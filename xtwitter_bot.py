@@ -174,6 +174,11 @@ philosophers_quotes = [
 toronto_timezone = pytz.timezone('America/Toronto')
 
 def tweet_random_quote():
+    """
+    Selects a random quote from `philosophers_quotes` and posts it to Twitter.
+
+    If the tweet fails, it logs an error message.
+    """
     quote = random.choice(philosophers_quotes)
     try:
         response = client.create_tweet(text=quote + " #philosophy #quote #thinking #motivation")
@@ -184,50 +189,34 @@ def tweet_random_quote():
         print(f"An unexpected error occurred: {e}")
 
 def active_clock():
-    now = datetime.now(toronto_timezone)  
-    next_run = schedule.next_run()  
+    """
+    Displays the current time in Toronto timezone, the next scheduled tweet time,
+    and the time remaining until the next tweet.
+    """
+    now = datetime.now(toronto_timezone)
+    next_run = schedule.next_run()
     next_run = toronto_timezone.localize(next_run)
     time_until_next = next_run - now
     print(f"\rCurrent time: {now.strftime('%Y-%m-%d %H:%M:%S %Z')} | Next tweet: {next_run.strftime('%Y-%m-%d %H:%M:%S %Z')} | Time until next tweet: {str(time_until_next)}", end="", flush=True)
 
-schedule.every().day.at("00:00").do(tweet_random_quote)
-schedule.every().day.at("01:00").do(tweet_random_quote)
-schedule.every().day.at("02:00").do(tweet_random_quote)
-schedule.every().day.at("03:00").do(tweet_random_quote)
-schedule.every().day.at("04:00").do(tweet_random_quote)
-schedule.every().day.at("05:00").do(tweet_random_quote)
-schedule.every().day.at("06:00").do(tweet_random_quote)
-schedule.every().day.at("07:00").do(tweet_random_quote)
-schedule.every().day.at("08:00").do(tweet_random_quote)
-schedule.every().day.at("09:00").do(tweet_random_quote)
-schedule.every().day.at("10:00").do(tweet_random_quote)
-schedule.every().day.at("11:00").do(tweet_random_quote)
-schedule.every().day.at("12:00").do(tweet_random_quote)
-schedule.every().day.at("13:00").do(tweet_random_quote)
-schedule.every().day.at("14:00").do(tweet_random_quote)
-schedule.every().day.at("15:00").do(tweet_random_quote)
-schedule.every().day.at("16:00").do(tweet_random_quote)
-schedule.every().day.at("17:00").do(tweet_random_quote)
-schedule.every().day.at("18:00").do(tweet_random_quote)
-schedule.every().day.at("19:00").do(tweet_random_quote)
-schedule.every().day.at("20:00").do(tweet_random_quote)
-schedule.every().day.at("21:00").do(tweet_random_quote)
-schedule.every().day.at("22:00").do(tweet_random_quote)
-schedule.every().day.at("23:00").do(tweet_random_quote)
+# Schedule tweets at the start of each hour
+for hour in range(24):
+    schedule.every().day.at(f"{hour:02d}:00").do(tweet_random_quote)
 
 try:
     while True:
+        # Run any scheduled tasks and display the active clock
         schedule.run_pending()
         active_clock()
         
-        time.sleep(1)  
+        # Sleep for a second to avoid high CPU usage
+        time.sleep(1)
 except KeyboardInterrupt:
     print("\nProcess interrupted. Exiting cleanly...")
     sys.exit(0)
 except Exception as e:
     print(f"An unexpected error occurred in the main loop: {e}")
     sys.exit(1)
-
 
 
 
