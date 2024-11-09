@@ -8,7 +8,7 @@ import os
 import sys
 from dotenv import load_dotenv
 
-#load in API keys
+# Load in API keys from the .env file
 load_dotenv()
 
 # Twitter API credentials from .env file
@@ -18,6 +18,7 @@ bearer_token = os.getenv("TWITTER_BEARER_TOKEN")
 access_token = os.getenv("TWITTER_ACCESS_TOKEN")
 access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 
+# Initialize Twitter client using Tweepy
 client = tweepy.Client(
     bearer_token=bearer_token,
     consumer_key=api_key,
@@ -25,6 +26,7 @@ client = tweepy.Client(
     access_token=access_token,
     access_token_secret=access_token_secret
 )
+
 
 philosophers_quotes = [
     "The only true wisdom is in knowing you know nothing. – Socrates",
