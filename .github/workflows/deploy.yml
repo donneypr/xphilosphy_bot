@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3  # Fetch the latest code
+      uses: actions/checkout@v3  
 
     - name: Deploy to Oracle VM
       uses: appleboy/ssh-action@v0.1.7
@@ -19,7 +19,7 @@ jobs:
         host: ${{ secrets.ORACLE_HOST }}
         username: ${{ secrets.ORACLE_USER }}
         key: ${{ secrets.ORACLE_SSH_KEY }}
-        passphrase: ${{ secrets.ORACLE_SSH_PASSPHRASE }}  # Optional, if your key has a passphrase
+        passphrase: ${{ secrets.ORACLE_SSH_PASSPHRASE }}  
         script: |
           cd /home/ubuntu/xtwitter_bot  # Navigate to the bot directory
           git pull origin main  # Pull the latest code from the repo
