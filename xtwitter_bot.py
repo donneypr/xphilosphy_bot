@@ -1,3 +1,4 @@
+##testing
 import tweepy
 import schedule
 import random
@@ -171,8 +172,6 @@ philosophers_quotes = [
     "Believe you can and you're halfway there. – Theodore Roosevelt"
     
 ] 
-
-#hehehehe
 # Timezone setup for Toronto
 toronto_timezone = pytz.timezone('America/Toronto')
 
