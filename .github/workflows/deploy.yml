@@ -25,4 +25,4 @@ jobs:
           source venv/bin/activate
           screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
           screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
-          screen -ls  # Verify the screen session is running
+          screen -ls  
