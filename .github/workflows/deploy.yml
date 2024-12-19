@@ -20,9 +20,17 @@ jobs:
         username: ${{ secrets.ORACLE_USER }}  
         key: ${{ secrets.ORACLE_SSH_KEY }}  
         script: |
-          cd /home/ubuntu/xtwitter_bot  
-          git pull origin main  
-          source venv/bin/activate
-          screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
-          screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
-          screen -ls
+            echo "Setting up SSH config:"
+            echo -e "Host github.com\n\tHostName github.com\n\tIdentityFile /home/ubuntu/.ssh/temp_ssh/id_ed25519\n\tIdentitiesOnly yes" > /home/ubuntu/.ssh/config
+            chmod 600 /home/ubuntu/.ssh/config
+            echo "Pulling latest code:"
+            cd /home/ubuntu/xtwitter_bot  
+            git pull origin main || echo "Git pull failed"
+            echo "Activating virtual environment:"
+            source venv/bin/activate
+            echo "Restarting bot:"
+            screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
+            screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
+            echo "Active screen sessions:"
+            screen -ls
+
