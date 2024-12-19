@@ -3,7 +3,7 @@ name: Deploy Twitter Bot
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to main branch
+      - main  # Trigger on pushes to the main branch
 
 jobs:
   deploy:
@@ -16,16 +16,16 @@ jobs:
     - name: Deploy to Oracle VM
       uses: appleboy/ssh-action@v0.1.7
       with:
-        host: ${{ secrets.ORACLE_HOST }}
-        username: ${{ secrets.ORACLE_USER }}
-        key: ${{ secrets.ORACLE_SSH_KEY }}
-        passphrase: ${{ secrets.ORACLE_SSH_PASSPHRASE }}  
+        host: ${{ secrets.ORACLE_HOST }}  
+        username: ${{ secrets.ORACLE_USER }}  
+        key: ${{ secrets.ORACLE_SSH_KEY }}  
         script: |
-          cd /home/ubuntu/xtwitter_bot  # Navigate to the bot directory
-          git pull origin main  # Pull the latest code from the repo
-          pip3 install --upgrade pip  # Ensure pip is up to date
-          pip3 install -r requirements.txt  # Install dependencies from requirements.txt
-          pkill -f xtwitter_bot.py || true  # Stop the bot if it's already running
-          sleep 2  # Give it some time to clean up
-          screen -dmS xtwitter_bot python3 xtwitter_bot.py > bot.log 2>&1  # Start the bot in a screen session and log output
-          screen -ls  # Verify that the screen session started
+          cd /home/ubuntu/xtwitter_bot  # Navigate to your bot directory
+          git pull origin main  # Pull the latest code
+          pip3 install --upgrade pip  # Update pip
+          pip3 install -r requirements.txt  # Install dependencies
+          # Stop the existing bot session
+          screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
+          # Start a new screen session for the bot
+          screen -dmS phil_bot python3 xtwitter_bot.py > bot.log 2>&1
+          screen -ls  # Verify the screen session is running
