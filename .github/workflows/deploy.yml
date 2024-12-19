@@ -3,7 +3,7 @@ name: Deploy Twitter Bot
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - main  
 
 jobs:
   deploy:
@@ -22,10 +22,7 @@ jobs:
         script: |
           cd /home/ubuntu/xtwitter_bot  # Navigate to your bot directory
           git pull origin main  # Pull the latest code
-          pip3 install --upgrade pip  # Update pip
-          pip3 install -r requirements.txt  # Install dependencies
-          # Stop the existing bot session
+          source venv/bin/activate
           screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
-          # Start a new screen session for the bot
-          screen -dmS phil_bot python3 xtwitter_bot.py > bot.log 2>&1
+          screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
           screen -ls  # Verify the screen session is running
