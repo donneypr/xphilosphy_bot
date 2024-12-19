@@ -172,6 +172,7 @@ philosophers_quotes = [
     
 ] 
 
+#hehehehe
 # Timezone setup for Toronto
 toronto_timezone = pytz.timezone('America/Toronto')
 
