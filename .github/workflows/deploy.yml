@@ -20,8 +20,8 @@ jobs:
         username: ${{ secrets.ORACLE_USER }}  
         key: ${{ secrets.ORACLE_SSH_KEY }}  
         script: |
-          cd /home/ubuntu/xtwitter_bot  # Navigate to your bot directory
-          git pull origin main  # Pull the latest code
+          cd /home/ubuntu/xtwitter_bot  
+          git pull origin main  
           source venv/bin/activate
           screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
           screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
