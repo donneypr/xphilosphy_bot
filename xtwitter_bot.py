@@ -1,4 +1,3 @@
-#plz work
 import tweepy
 import schedule
 import random
@@ -183,7 +182,7 @@ def tweet_random_quote():
     """
     quote = random.choice(philosophers_quotes)
     try:
-        response = client.create_tweet(text=quote + " #philosophy #quote #thinking #motivation")
+        response = client.create_tweet(text=quote)
         print(f"Tweet posted successfully: {response.data}")
     except tweepy.TweepyException as e:
         print(f"Error posting tweet: {e}")
