@@ -1,4 +1,4 @@
-name: Deploy Twitter Bot
+name: Deploy and Run Bot
 
 on:
   push:
@@ -11,34 +11,31 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3  
+      uses: actions/checkout@v3
 
     - name: Deploy to Oracle VM
       uses: appleboy/ssh-action@v0.1.7
       with:
-        host: ${{ secrets.ORACLE_HOST }}  
-        username: ${{ secrets.ORACLE_USER }}  
-        key: ${{ secrets.ORACLE_SSH_KEY }}  
+        host: ${{ secrets.ORACLE_HOST }}
+        username: ${{ secrets.ORACLE_USER }}
+        key: ${{ secrets.ORACLE_SSH_KEY }}
         script: |
-            echo "Setting up HTTPS Git config with Token:"
-            git config --global credential.helper 'store'
-            echo "https://${{ secrets.FINEGRAINTOKEN }}@github.com" > ~/.git-credentials
-            git config --global user.name "GitHub Actions Bot"
-            git config --global user.email "actions@github.com"
-            git config --global --add safe.directory /home/ubuntu/xtwitter_bot
-
-            echo "Pulling latest code using token:"
-            if [ ! -d "/home/ubuntu/xtwitter_bot" ]; then
-              git clone https://${{ secrets.FINEGRAINTOKEN }}@github.com/donneypr/xphilosphy_bot.git /home/ubuntu/xtwitter_bot
+            echo "Checking if the repository exists..."
+            if [ ! -d "/home/ubuntu/xtwitter_bot/.git" ]; then
+                echo "Repository does not exist. Cloning..."
+                git clone https://${{ secrets.FINEGRAINTOKEN }}@github.com/donneypr/xphilosphy_bot.git /home/ubuntu/xtwitter_bot
             else
-              cd /home/ubuntu/xtwitter_bot && git pull origin main || echo "Git pull failed"
+                echo "Repository exists. Pulling latest changes..."
+                cd /home/ubuntu/xtwitter_bot
+                git reset --hard  # Discard local changes
+                git pull origin main || echo "Git pull failed"
             fi
 
-            echo "Activating virtual environment:"
+            echo "Activating virtual environment..."
             cd /home/ubuntu/xtwitter_bot
             source venv/bin/activate
 
-            echo "Restarting bot:"
+            echo "Restarting bot in a screen session..."
             screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
             screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
             
