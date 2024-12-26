@@ -20,15 +20,27 @@ jobs:
         username: ${{ secrets.ORACLE_USER }}  
         key: ${{ secrets.ORACLE_SSH_KEY }}  
         script: |
-            echo "Setting up SSH config:"
-            echo -e "Host github.com\n\tHostName github.com\n\tIdentityFile /home/ubuntu/.ssh/temp_ssh/id_ed25519\n\tIdentitiesOnly yes" > /home/ubuntu/.ssh/config
-            chmod 600 /home/ubuntu/.ssh/config
-            echo "Pulling latest code:"
-            GIT_SSH_COMMAND="ssh -i /home/ubuntu/.ssh/temp_ssh/id_ed25519 -o IdentitiesOnly=yes" git pull origin main || echo "Git pull failed"
+            echo "Setting up HTTPS Git config with Token:"
+            git config --global credential.helper 'store'
+            echo "https://${{ secrets.FINEGRAINTOKEN }}@github.com" > ~/.git-credentials
+            git config --global user.name "GitHub Actions Bot"
+            git config --global user.email "actions@github.com"
+            git config --global --add safe.directory /home/ubuntu/xphilosphy_bot
+
+            echo "Pulling latest code using token:"
+            if [ ! -d "/home/ubuntu/xphilosphy_bot" ]; then
+              git clone https://${{ secrets.FINEGRAINTOKEN }}@github.com/donneypr/xphilosphy_bot.git /home/ubuntu/xphilosphy_bot
+            else
+              cd /home/ubuntu/xphilosphy_bot && git pull origin main || echo "Git pull failed"
+            fi
+
             echo "Activating virtual environment:"
+            cd /home/ubuntu/xphilosphy_bot
             source venv/bin/activate
+
             echo "Restarting bot:"
             screen -ls | grep "phil_bot" && screen -S phil_bot -X quit || true
             screen -dmS phil_bot venv/bin/python3 xtwitter_bot.py > bot.log 2>&1
+            
             echo "Active screen sessions:"
             screen -ls
