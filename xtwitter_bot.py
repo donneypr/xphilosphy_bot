@@ -200,6 +200,7 @@ def active_clock():
     time_until_next = next_run - now
     print(f"\rCurrent time: {now.strftime('%Y-%m-%d %H:%M:%S %Z')} | Next tweet: {next_run.strftime('%Y-%m-%d %H:%M:%S %Z')} | Time until next tweet: {str(time_until_next)}", end="", flush=True)
 
+#testing my GH alias LOL
 
 schedule.every().day.at(f"{11:02d}:00").do(tweet_random_quote)
 
